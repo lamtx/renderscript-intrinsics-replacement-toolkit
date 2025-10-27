@@ -18,6 +18,7 @@ package com.google.android.renderscript
 
 import android.graphics.Bitmap
 import java.lang.IllegalArgumentException
+import androidx.core.graphics.createBitmap
 
 // This string is used for error messages.
 private const val externalName = "RenderScript Toolkit"
@@ -79,7 +80,7 @@ object Toolkit {
         destArray: ByteArray,
         sizeX: Int,
         sizeY: Int,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ) {
         require(sourceArray.size >= sizeX * sizeY * 4) {
             "$externalName blend. sourceArray is too small for the given dimensions. " +
@@ -121,7 +122,7 @@ object Toolkit {
         mode: BlendingMode,
         sourceBitmap: Bitmap,
         destBitmap: Bitmap,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ) {
         validateBitmap("blend", sourceBitmap)
         validateBitmap("blend", destBitmap)
@@ -179,7 +180,7 @@ object Toolkit {
         sizeX: Int,
         sizeY: Int,
         radius: Int = 5,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): ByteArray {
         require(vectorSize == 1 || vectorSize == 4) {
             "$externalName blur. The vectorSize should be 1 or 4. $vectorSize provided."
@@ -342,7 +343,7 @@ object Toolkit {
         outputVectorSize: Int,
         matrix: FloatArray,
         addVector: FloatArray = floatArrayOf(0f, 0f, 0f, 0f),
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): ByteArray {
         require(inputVectorSize in 1..4) {
             "$externalName colorMatrix. The inputVectorSize should be between 1 and 4. " +
@@ -400,7 +401,7 @@ object Toolkit {
         inputBitmap: Bitmap,
         matrix: FloatArray,
         addVector: FloatArray = floatArrayOf(0f, 0f, 0f, 0f),
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): Bitmap {
         validateBitmap("colorMatrix", inputBitmap)
         require(matrix.size == 16) {
@@ -463,7 +464,7 @@ object Toolkit {
         sizeX: Int,
         sizeY: Int,
         coefficients: FloatArray,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): ByteArray {
         require(vectorSize in 1..4) {
             "$externalName convolve. The vectorSize should be between 1 and 4. " +
@@ -520,7 +521,7 @@ object Toolkit {
     fun convolve(
         inputBitmap: Bitmap,
         coefficients: FloatArray,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): Bitmap {
         validateBitmap("convolve", inputBitmap)
         require(coefficients.size == 9 || coefficients.size == 25) {
@@ -567,7 +568,7 @@ object Toolkit {
         vectorSize: Int,
         sizeX: Int,
         sizeY: Int,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): IntArray {
         require(vectorSize in 1..4) {
             "$externalName histogram. The vectorSize should be between 1 and 4. " +
@@ -619,7 +620,7 @@ object Toolkit {
     @JvmOverloads
     fun histogram(
         inputBitmap: Bitmap,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): IntArray {
         validateBitmap("histogram", inputBitmap)
         validateRestriction("histogram", inputBitmap, restriction)
@@ -668,7 +669,7 @@ object Toolkit {
         sizeX: Int,
         sizeY: Int,
         coefficients: FloatArray? = null,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): IntArray {
         require(vectorSize in 1..4) {
             "$externalName histogramDot. The vectorSize should be between 1 and 4. " +
@@ -728,7 +729,7 @@ object Toolkit {
     fun histogramDot(
         inputBitmap: Bitmap,
         coefficients: FloatArray? = null,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): IntArray {
         validateBitmap("histogramDot", inputBitmap)
         validateHistogramDotCoefficients(coefficients, vectorSize(inputBitmap))
@@ -773,7 +774,7 @@ object Toolkit {
         sizeX: Int,
         sizeY: Int,
         table: LookupTable,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): ByteArray {
         require(inputArray.size >= sizeX * sizeY * 4) {
             "$externalName lut. inputArray is too small for the given dimensions. " +
@@ -822,7 +823,7 @@ object Toolkit {
     fun lut(
         inputBitmap: Bitmap,
         table: LookupTable,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): Bitmap {
         validateBitmap("lut", inputBitmap)
         validateRestriction("lut", inputBitmap, restriction)
@@ -874,7 +875,7 @@ object Toolkit {
         sizeX: Int,
         sizeY: Int,
         cube: Rgba3dArray,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): ByteArray {
         require(inputArray.size >= sizeX * sizeY * 4) {
             "$externalName lut3d. inputArray is too small for the given dimensions. " +
@@ -926,7 +927,7 @@ object Toolkit {
     fun lut3d(
         inputBitmap: Bitmap,
         cube: Rgba3dArray,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): Bitmap {
         validateBitmap("lut3d", inputBitmap)
         validateRestriction("lut3d", inputBitmap, restriction)
@@ -974,7 +975,7 @@ object Toolkit {
         inputSizeY: Int,
         outputSizeX: Int,
         outputSizeY: Int,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): ByteArray {
         require(vectorSize in 1..4) {
             "$externalName resize. The vectorSize should be between 1 and 4. $vectorSize provided."
@@ -1025,7 +1026,7 @@ object Toolkit {
         inputBitmap: Bitmap,
         outputSizeX: Int,
         outputSizeY: Int,
-        restriction: Range2d? = null
+        restriction: Range2d? = null,
     ): Bitmap {
         validateBitmap("resize", inputBitmap)
         validateRestriction("resize", outputSizeX, outputSizeY, restriction)
@@ -1118,7 +1119,7 @@ object Toolkit {
         destArray: ByteArray,
         sizeX: Int,
         sizeY: Int,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeBlendBitmap(
@@ -1126,7 +1127,7 @@ object Toolkit {
         mode: Int,
         sourceBitmap: Bitmap,
         destBitmap: Bitmap,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeBlur(
@@ -1137,7 +1138,7 @@ object Toolkit {
         sizeY: Int,
         radius: Int,
         outputArray: ByteArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeBlurBitmap(
@@ -1145,7 +1146,7 @@ object Toolkit {
         inputBitmap: Bitmap,
         outputBitmap: Bitmap,
         radius: Int,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeColorMatrix(
@@ -1158,7 +1159,7 @@ object Toolkit {
         outputVectorSize: Int,
         matrix: FloatArray,
         addVector: FloatArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeColorMatrixBitmap(
@@ -1167,7 +1168,7 @@ object Toolkit {
         outputBitmap: Bitmap,
         matrix: FloatArray,
         addVector: FloatArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeConvolve(
@@ -1178,7 +1179,7 @@ object Toolkit {
         sizeY: Int,
         outputArray: ByteArray,
         coefficients: FloatArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeConvolveBitmap(
@@ -1186,7 +1187,7 @@ object Toolkit {
         inputBitmap: Bitmap,
         outputBitmap: Bitmap,
         coefficients: FloatArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeHistogram(
@@ -1196,14 +1197,14 @@ object Toolkit {
         sizeX: Int,
         sizeY: Int,
         outputArray: IntArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeHistogramBitmap(
         nativeHandle: Long,
         inputBitmap: Bitmap,
         outputArray: IntArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeHistogramDot(
@@ -1214,7 +1215,7 @@ object Toolkit {
         sizeY: Int,
         outputArray: IntArray,
         coefficients: FloatArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeHistogramDotBitmap(
@@ -1222,7 +1223,7 @@ object Toolkit {
         inputBitmap: Bitmap,
         outputArray: IntArray,
         coefficients: FloatArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeLut(
@@ -1235,7 +1236,7 @@ object Toolkit {
         green: ByteArray,
         blue: ByteArray,
         alpha: ByteArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeLutBitmap(
@@ -1246,7 +1247,7 @@ object Toolkit {
         green: ByteArray,
         blue: ByteArray,
         alpha: ByteArray,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeLut3d(
@@ -1259,7 +1260,7 @@ object Toolkit {
         cubeSizeX: Int,
         cubeSizeY: Int,
         cubeSizeZ: Int,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeLut3dBitmap(
@@ -1270,7 +1271,7 @@ object Toolkit {
         cubeSizeX: Int,
         cubeSizeY: Int,
         cubeSizeZ: Int,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeResize(
@@ -1282,14 +1283,14 @@ object Toolkit {
         outputArray: ByteArray,
         outputSizeX: Int,
         outputSizeY: Int,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeResizeBitmap(
         nativeHandle: Long,
         inputBitmap: Bitmap,
         outputBitmap: Bitmap,
-        restriction: Range2d?
+        restriction: Range2d?,
     )
 
     private external fun nativeYuvToRgb(
@@ -1298,7 +1299,7 @@ object Toolkit {
         outputArray: ByteArray,
         sizeX: Int,
         sizeY: Int,
-        format: Int
+        format: Int,
     )
 
     private external fun nativeYuvToRgbBitmap(
@@ -1307,7 +1308,7 @@ object Toolkit {
         sizeX: Int,
         sizeY: Int,
         outputBitmap: Bitmap,
-        value: Int
+        value: Int,
     )
 }
 
@@ -1440,7 +1441,7 @@ data class Range2d(
     val startX: Int,
     val endX: Int,
     val startY: Int,
-    val endY: Int
+    val endY: Int,
 ) {
     constructor() : this(0, 0, 0, 0)
 }
@@ -1474,7 +1475,7 @@ class Rgba3dArray(val values: ByteArray, val sizeX: Int, val sizeY: Int, val siz
 internal fun validateBitmap(
     function: String,
     inputBitmap: Bitmap,
-    alphaAllowed: Boolean = true
+    alphaAllowed: Boolean = true,
 ) {
     if (alphaAllowed) {
         require(
@@ -1498,11 +1499,11 @@ internal fun validateBitmap(
 }
 
 internal fun createCompatibleBitmap(inputBitmap: Bitmap) =
-    Bitmap.createBitmap(inputBitmap.width, inputBitmap.height, inputBitmap.config)
+    createBitmap(inputBitmap.width, inputBitmap.height, inputBitmap.config!!)
 
 internal fun validateHistogramDotCoefficients(
     coefficients: FloatArray?,
-    vectorSize: Int
+    vectorSize: Int,
 ) {
     require(coefficients == null || coefficients.size == vectorSize) {
         "$externalName histogramDot. The coefficients should be null or have $vectorSize values."
@@ -1530,7 +1531,7 @@ internal fun validateRestriction(
     tag: String,
     sizeX: Int,
     sizeY: Int,
-    restriction: Range2d? = null
+    restriction: Range2d? = null,
 ) {
     if (restriction == null) return
     require(restriction.startX < sizeX && restriction.endX <= sizeX) {
