@@ -28,6 +28,7 @@ import java.util.Random
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
+import androidx.core.graphics.createBitmap
 
 /**
  * A vector of 4 integers.
@@ -36,7 +37,7 @@ class Int4(
     var x: Int = 0,
     var y: Int = 0,
     var z: Int = 0,
-    var w: Int = 0
+    var w: Int = 0,
 ) {
     operator fun plus(other: Int4) = Int4(x + other.x, y + other.y, z + other.z, w + other.w)
     operator fun plus(n: Int) = Int4(x + n, y + n, z + n, w + n)
@@ -59,7 +60,7 @@ data class Float4(
     var x: Float = 0f,
     var y: Float = 0f,
     var z: Float = 0f,
-    var w: Float = 0f
+    var w: Float = 0f,
 ) {
     operator fun plus(other: Float4) = Float4(x + other.x, y + other.y, z + other.z, w + other.w)
     operator fun plus(f: Float) = Float4(x + f, y + f, z + f, w + f)
@@ -113,7 +114,7 @@ data class Rgba(
     var r: Int = 0,
     var g: Int = 0,
     var b: Int = 0,
-    var a: Int = 0
+    var a: Int = 0,
 ) {
     operator fun plus(other: Rgba) =
         Rgba(r + other.r, g + other.g, b + other.b, a + other.a).clampToUByteRange()
@@ -146,7 +147,7 @@ class Vector2dArray(
     val values: UByteArray,
     val vectorSize: Int,
     val sizeX: Int,
-    val sizeY: Int
+    val sizeY: Int,
 ) {
     /**
      * If true, index access that would try to get a value that's out of bounds will simply
@@ -195,7 +196,7 @@ class FloatVector2dArray(
     val values: FloatArray,
     val vectorSize: Int,
     val sizeX: Int,
-    val sizeY: Int
+    val sizeY: Int,
 ) {
     /**
      * If true, index access that would try to get a value that's out of bounds will simply
@@ -241,7 +242,7 @@ class FloatVector2dArray(
 class Rgba2dArray(
     private val values: ByteArray,
     val sizeX: Int,
-    val sizeY: Int
+    val sizeY: Int,
 ) {
     operator fun get(x: Int, y: Int): Rgba {
         val i = indexOfVector(x, y)
@@ -310,7 +311,7 @@ fun randomFloatArray(
     sizeX: Int,
     sizeY: Int,
     elementSize: Int,
-    factor: Float = 1f
+    factor: Float = 1f,
 ): FloatArray {
     val r = Random(seed)
     return FloatArray(sizeX * sizeY * elementSize) { r.nextFloat() * factor }
@@ -480,7 +481,7 @@ fun vectorSizeOfBitmap(bitmap: Bitmap): Int {
 }
 
 fun duplicateBitmap(original: Bitmap): Bitmap {
-    val copy = Bitmap.createBitmap(original.width, original.height, original.config)
+    val copy = createBitmap(original.width, original.height, original.config!!)
     val canvas = Canvas(copy)
     canvas.drawBitmap(original, 0f, 0f, null)
     return copy
